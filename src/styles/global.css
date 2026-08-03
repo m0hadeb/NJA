@@ -1,13 +1,16 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/geist";
+@import "@fontsource-variable/heebo";
+@import "@fontsource-variable/cormorant-garamond";
+@import "@fontsource-variable/noto-serif-hebrew";
+@import "@fontsource-variable/frank-ruhl-libre";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-    --font-heading: var(--font-sans);
-    --font-sans: 'Geist Variable', sans-serif;
+    --font-heading: 'Cormorant Garamond Variable', serif;
+    --font-sans: 'Heebo Variable', sans-serif;
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -126,5 +129,531 @@
     }
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
     }
+}
+
+.mobile-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.menu-lines,
+.menu-lines::before,
+.menu-lines::after {
+  display: block;
+  width: 1rem;
+  height: 1px;
+  background: currentColor;
+}
+
+.menu-lines {
+  position: relative;
+}
+
+.menu-lines::before,
+.menu-lines::after {
+  position: absolute;
+  left: 0;
+  content: '';
+}
+
+.menu-lines::before {
+  top: -0.3rem;
+}
+
+.menu-lines::after {
+  top: 0.3rem;
+}
+
+.paper-canvas {
+  position: relative;
+  isolation: isolate;
+  overflow-x: hidden;
+  background-color: #ebe4da;
+}
+
+.paper-canvas::before {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  content: '';
+  opacity: 0.22;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+.site-header {
+  position: relative;
+  z-index: 20;
+  min-height: clamp(11rem, 17vw, 15rem);
+}
+
+.header-inner {
+  display: flex;
+  width: min(100%, 96rem);
+  min-height: inherit;
+  margin-inline: auto;
+  padding: 2.4rem clamp(1.5rem, 4vw, 4rem);
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 3rem;
+}
+
+.brand {
+  display: block;
+  width: clamp(18rem, 33vw, 29rem);
+  margin-top: 0.1rem;
+  transition: opacity 180ms ease;
+}
+
+.brand:hover {
+  opacity: 0.68;
+}
+
+.brand:focus-visible,
+.desktop-nav a:focus-visible,
+.scroll-cue:focus-visible,
+.mobile-menu summary:focus-visible,
+.mobile-menu nav a:focus-visible {
+  outline: 2px solid #6b1a1a;
+  outline-offset: 5px;
+}
+
+.brand img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.desktop-nav {
+  display: flex;
+  margin-top: 1.25rem;
+  align-items: center;
+  gap: clamp(2rem, 4vw, 4rem);
+}
+
+.desktop-nav a {
+  position: relative;
+  padding: 0.75rem 0.2rem;
+  color: #27231f;
+  font-family: 'Frank Ruhl Libre Variable', serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+
+.desktop-nav a:hover,
+.desktop-nav a.active {
+  color: #6b1a1a;
+}
+
+.desktop-nav a.active::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 1.6rem;
+  height: 1px;
+  background: #6b1a1a;
+  content: '';
+}
+
+.mobile-menu {
+  display: none;
+}
+
+.hero-stage {
+  position: relative;
+  z-index: 1;
+  min-height: calc(100svh - clamp(11rem, 17vw, 15rem));
+  padding: 0 clamp(1.5rem, 4vw, 4rem) 1.6rem;
+}
+
+.burgundy-horizon {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: clamp(14rem, 22vw, 18.5rem);
+  background-color: #6b1a1a;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='b'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.62' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23b)' opacity='.16'/%3E%3C/svg%3E");
+  box-shadow: inset 0 1px rgb(255 255 255 / 10%), inset 0 -1px rgb(35 0 0 / 15%);
+}
+
+.hero-layout {
+  width: min(100%, 96rem);
+  margin-inline: auto;
+}
+
+.photo-column {
+  position: relative;
+  z-index: 1;
+  padding-top: 3.25rem;
+}
+
+.photo-frame {
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: clamp(0.35rem, 0.65vw, 0.6rem);
+  background: #f4eee5;
+  box-shadow: 0 12px 28px rgb(57 35 24 / 9%);
+}
+
+.photo-frame img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2.25 / 1;
+  object-fit: cover;
+  object-position: 47% 49%;
+}
+
+.photo-frame::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 100% 100%, rgb(0 0 0 / 52%) 0, rgb(0 0 0 / 16%) 38%, transparent 68%);
+  content: '';
+}
+
+.photo-copy {
+  position: absolute;
+  z-index: 2;
+  right: clamp(1.25rem, 4vw, 4rem);
+  bottom: clamp(1.25rem, 3.2vw, 3rem);
+  max-width: min(68rem, 78%);
+  color: #fffaf4;
+  text-align: right;
+  text-shadow:
+    0 2px 3px rgb(0 0 0 / 65%),
+    0 0 18px rgb(0 0 0 / 35%);
+}
+
+.photo-copy h1 {
+  margin: 0;
+  font-family: 'Frank Ruhl Libre Variable', serif;
+  font-size: clamp(4.2rem, 7.3vw, 7.5rem);
+  font-weight: 450;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.photo-copy p {
+  margin: 0.75rem 0 0;
+  font-family: 'Frank Ruhl Libre Variable', serif;
+  font-size: clamp(1.75rem, 3.1vw, 3.1rem);
+  font-weight: 430;
+  line-height: 1.3;
+}
+
+.academy-signature {
+  margin: 3.35rem 0 0;
+  color: #2e2925;
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  letter-spacing: 0.12em;
+  text-align: center;
+}
+
+.scroll-cue {
+  position: relative;
+  display: block;
+  width: 2.5rem;
+  height: 3rem;
+  margin: 0.7rem auto 0;
+}
+
+.scroll-cue::before {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 1.85rem;
+  background: #39332e;
+  content: '';
+}
+
+.scroll-cue span {
+  position: absolute;
+  bottom: 0.2rem;
+  left: calc(50% - 0.22rem);
+  width: 0.45rem;
+  height: 0.45rem;
+  border: 1px solid #39332e;
+  border-radius: 999px;
+}
+
+/* Homepage composition: vertical identity at left, navigation and hero at right. */
+.home-shell {
+  display: grid;
+  min-height: 100svh;
+  grid-template-columns: clamp(12rem, 17vw, 14.5rem) minmax(0, 1fr);
+  direction: ltr;
+}
+
+.identity-rail {
+  position: relative;
+  z-index: 30;
+  min-height: 100svh;
+  border-right: 1px solid rgb(46 41 37 / 16%);
+  background: rgb(232 226 218 / 58%);
+  box-shadow: 12px 0 30px rgb(57 35 24 / 4%);
+}
+
+.vertical-brand {
+  position: sticky;
+  top: 0;
+  display: flex;
+  height: 100svh;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.vertical-brand img {
+  display: block;
+  width: 100%;
+  height: 100svh;
+  object-fit: cover;
+  object-position: center;
+  mix-blend-mode: multiply;
+}
+
+.vertical-brand:focus-visible {
+  outline: 2px solid #6b1a1a;
+  outline-offset: -7px;
+}
+
+.home-content {
+  min-width: 0;
+  direction: rtl;
+}
+
+.home-content .site-header {
+  min-height: clamp(8.5rem, 13vw, 11.5rem);
+}
+
+.home-content .header-inner {
+  width: 100%;
+  padding: 2rem clamp(2rem, 5vw, 5rem);
+  justify-content: flex-start;
+}
+
+.home-content .desktop-nav {
+  margin-top: 0.8rem;
+  margin-left: auto;
+}
+
+.mobile-brand {
+  display: none;
+}
+
+.home-content .hero-stage {
+  min-height: calc(100svh - clamp(8.5rem, 13vw, 11.5rem));
+  padding: 0 clamp(1.25rem, 3.5vw, 3.5rem) 1.5rem;
+}
+
+.home-content .burgundy-horizon {
+  height: clamp(12.5rem, 20vw, 18rem);
+}
+
+.home-content .hero-layout {
+  width: 100%;
+}
+
+.home-content .photo-column {
+  width: min(95%, 90rem);
+  padding-top: clamp(2rem, 3.5vw, 3.25rem);
+  margin-right: auto;
+  margin-left: 0;
+}
+
+.home-content .photo-frame img {
+  aspect-ratio: 1.95 / 1;
+  object-position: 46% 50%;
+}
+
+.home-content .photo-copy {
+  right: clamp(1.5rem, 4vw, 4rem);
+  bottom: clamp(1.35rem, 3vw, 2.75rem);
+  max-width: 80%;
+}
+
+.home-content .photo-copy h1 {
+  font-size: clamp(3.1rem, 5.5vw, 5.6rem);
+  font-weight: 450;
+  letter-spacing: -0.035em;
+}
+
+.home-content .photo-copy p {
+  margin-top: 0.45rem;
+  font-size: clamp(1.65rem, 2.8vw, 2.75rem);
+  font-weight: 450;
+  letter-spacing: -0.02em;
+}
+
+.home-content .academy-signature {
+  margin-top: 2.25rem;
+  font-size: clamp(1.25rem, 1.7vw, 1.55rem);
+  letter-spacing: 0.14em;
+}
+
+@media (max-width: 900px) {
+  .home-shell {
+    display: block;
+  }
+
+  .identity-rail {
+    display: none;
+  }
+
+  .mobile-brand {
+    display: block;
+  }
+
+  .site-header {
+    min-height: 8.75rem;
+  }
+
+  .header-inner {
+    padding-block: 1.35rem;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .brand {
+    width: min(18rem, 68vw);
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .mobile-menu {
+    position: relative;
+    display: block;
+  }
+
+  .mobile-menu summary {
+    display: flex;
+    min-height: 2.8rem;
+    padding: 0.65rem 0.85rem;
+    cursor: pointer;
+    list-style: none;
+    align-items: center;
+    gap: 0.7rem;
+    border: 1px solid #6b1a1a;
+    color: #6b1a1a;
+    font-family: 'Frank Ruhl Libre Variable', serif;
+    font-size: 0.85rem;
+  }
+
+  .mobile-menu nav {
+    position: absolute;
+    z-index: 30;
+    top: calc(100% + 0.55rem);
+    left: 0;
+    display: flex;
+    width: 11rem;
+    padding: 0.45rem;
+    flex-direction: column;
+    border: 1px solid rgb(107 26 26 / 30%);
+    background: #f4eee5;
+    box-shadow: 0 12px 24px rgb(48 28 18 / 14%);
+  }
+
+  .mobile-menu nav a {
+    padding: 0.7rem 0.8rem;
+    color: #2e2925;
+    font-family: 'Frank Ruhl Libre Variable', serif;
+    font-size: 1.05rem;
+    text-decoration: none;
+  }
+
+  .hero-stage {
+    min-height: calc(100svh - 8.75rem);
+    padding-inline: 1rem;
+  }
+
+  .burgundy-horizon {
+    top: 0;
+    height: 13rem;
+  }
+
+  .hero-layout {
+    width: 100%;
+  }
+
+  .photo-column {
+    padding-top: 2rem;
+  }
+
+  .photo-frame img {
+    aspect-ratio: 1.45 / 1;
+  }
+
+  .photo-copy {
+    right: 1rem;
+    bottom: 1rem;
+    max-width: 88%;
+  }
+
+  .photo-copy h1 {
+    font-size: clamp(2.75rem, 13vw, 4.25rem);
+  }
+
+  .photo-copy p {
+    margin-top: 0.35rem;
+    font-size: clamp(1.2rem, 6vw, 1.7rem);
+  }
+
+  .academy-signature {
+    margin-top: 1.8rem;
+  }
+
+  .home-content .site-header {
+    min-height: 8.75rem;
+  }
+
+  .home-content .header-inner {
+    padding: 1.35rem 1.25rem;
+    justify-content: space-between;
+  }
+
+  .home-content .hero-stage {
+    min-height: calc(100svh - 8.75rem);
+    padding-inline: 1rem;
+  }
+
+  .home-content .photo-column {
+    width: 100%;
+    padding-top: 2rem;
+  }
+
+  .home-content .photo-frame img {
+    aspect-ratio: 1.35 / 1;
+  }
+
+  .home-content .photo-copy {
+    right: 1rem;
+    bottom: 1rem;
+    max-width: 91%;
+  }
+
+  .home-content .photo-copy h1 {
+    font-size: clamp(2.45rem, 12vw, 4rem);
+  }
+
+  .home-content .photo-copy p {
+    font-size: clamp(1.15rem, 5.8vw, 1.65rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }

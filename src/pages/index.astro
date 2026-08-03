@@ -2,53 +2,109 @@
 import '@/styles/global.css';
 
 const pageTitle = 'Nan Jing Academy';
+const navigation = [
+  { label: 'דף הבית', href: '#home', active: true },
+  { label: 'אודות', href: '#about' },
+  { label: 'קורסים', href: '#courses' },
+  { label: 'צור קשר', href: '#contact' },
+];
 ---
 
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="he" dir="rtl">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="Nan Jing Academy." />
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='34' fill='%238b5cf6'/%3E%3C/svg%3E" />
+    <meta
+      name="description"
+      content="Nan Jing Academy — בית ספר לרפואה סינית ויפנית למטפלים מקצועיים."
+    />
+    <meta name="theme-color" content="#ebe4da" />
     <title>{pageTitle}</title>
   </head>
-  <body class="min-h-svh bg-background text-foreground antialiased">
-    <main class="relative grid min-h-svh place-items-center overflow-hidden px-6 pt-40 pb-16 sm:py-16">
-      <img
-        src="/images/chinese-medicine-hero.png"
-        alt=""
-        width="1536"
-        height="1024"
-        fetchpriority="high"
-        class="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
-        aria-hidden="true"
-      />
-      <div
-        class="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/65"
-        aria-hidden="true"
-      ></div>
-      <a
-        href="/"
-        aria-label="Nan Jing Academy home"
-        class="absolute top-6 left-6 z-10 w-[min(19rem,calc(100vw-3rem))] rounded-2xl border border-white/10 bg-white p-3 shadow-2xl shadow-black/30 transition-transform duration-300 hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:outline-none sm:top-8 sm:left-8 sm:w-80"
-      >
-        <img
-          src="/images/nan-jing-academy-logo.png"
-          alt="Nan Jing Academy"
-          width="424"
-          height="123"
-          class="block h-auto w-full"
-        />
-      </a>
-      <section class="relative z-10 mx-auto max-w-5xl text-center">
-        <h1 class="text-5xl leading-[0.92] font-bold tracking-[-0.07em] text-balance sm:text-7xl lg:text-8xl">
-          Nan Jing Academy
-        </h1>
-        <p class="mt-6 text-base text-muted-foreground sm:text-xl">
-          Your new landing page is up and running.
-        </p>
-      </section>
-    </main>
+  <body class="paper-canvas min-h-svh text-neutral-950 antialiased">
+    <div class="home-shell" id="home">
+      <aside class="identity-rail" aria-label="Nan Jing Academy">
+        <a href="#home" class="vertical-brand" aria-label="Nan Jing Academy — דף הבית">
+          <img
+            src="/images/nan-jing-academy-vertical-identity.png"
+            alt="Nan Jing Academy — 南京中醫學院"
+            width="209"
+            height="831"
+          />
+        </a>
+      </aside>
+
+      <div class="home-content">
+        <header class="site-header">
+          <div class="header-inner" dir="ltr">
+            <a href="#home" class="brand mobile-brand" aria-label="Nan Jing Academy — דף הבית">
+              <img
+                src="/images/nan-jing-academy-logo-v2.png"
+                alt="Nan Jing Academy"
+                width="1395"
+                height="375"
+              />
+            </a>
+
+            <nav class="desktop-nav" aria-label="ניווט ראשי" dir="rtl">
+              {
+                navigation.map((item) => (
+                  <a
+                    href={item.href}
+                    aria-current={item.active ? 'page' : undefined}
+                    class:list={{ active: item.active }}
+                  >
+                    {item.label}
+                  </a>
+                ))
+              }
+            </nav>
+
+            <details class="mobile-menu" dir="rtl">
+              <summary>
+                <span>תפריט</span>
+                <span class="menu-lines" aria-hidden="true"></span>
+              </summary>
+              <nav aria-label="ניווט למובייל">
+                {
+                  navigation.map((item) => (
+                    <a href={item.href} aria-current={item.active ? 'page' : undefined}>
+                      {item.label}
+                    </a>
+                  ))
+                }
+              </nav>
+            </details>
+          </div>
+        </header>
+
+        <main class="hero-stage">
+          <div class="burgundy-horizon" aria-hidden="true"></div>
+
+          <section class="hero-layout" aria-label="Nan Jing Academy" dir="ltr">
+            <div class="photo-column">
+              <figure class="photo-frame">
+                <img
+                  src="/images/abdominal-acupuncture-hero.jpg"
+                  alt="טיפול בדיקור בטן במסגרת הרפואה הסינית"
+                  width="968"
+                  height="632"
+                  fetchpriority="high"
+                />
+                <figcaption class="photo-copy" dir="rtl">
+                  <h1>לעצור לדמיין</h1>
+                  <p>ולהתחיל להרגיש את הגוף</p>
+                </figcaption>
+              </figure>
+              <p class="academy-signature">Nan Jing Academy</p>
+              <a class="scroll-cue" href="#about" aria-label="גלילה לחלק הבא">
+                <span aria-hidden="true"></span>
+              </a>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
   </body>
 </html>
