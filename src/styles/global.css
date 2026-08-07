@@ -621,6 +621,26 @@ a {
   stroke: none;
 }
 
+.social-link--facebook {
+  border-color: rgb(24 119 242 / 58%);
+  color: #1877f2;
+  background: rgb(24 119 242 / 5%);
+}
+
+.social-link--instagram {
+  border-color: transparent;
+  color: #c13584;
+  background:
+    linear-gradient(var(--paper-light), var(--paper-light)) padding-box,
+    linear-gradient(45deg, #f58529, #dd2a7b 42%, #8134af 72%, #515bd4) border-box;
+}
+
+.social-link--whatsapp {
+  border-color: rgb(18 140 126 / 58%);
+  color: #128c7e;
+  background: rgb(37 211 102 / 6%);
+}
+
 .form-fields {
   position: relative;
   z-index: 2;
