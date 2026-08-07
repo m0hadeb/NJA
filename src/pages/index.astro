@@ -3,10 +3,24 @@ import '@/styles/global.css';
 
 const pageTitle = 'Nan Jing Academy';
 const navigation = [
-  { label: 'דף הבית', href: '#home', active: true },
-  { label: 'אודות', href: '#about' },
-  { label: 'קורסים', href: '#courses' },
-  { label: 'צור קשר', href: '#contact' },
+  { label: 'דף הבית', href: '#home', section: 'home' },
+  { label: 'אודות', href: '#about', section: 'about' },
+  { label: 'קורסים', href: '#courses', section: 'courses' },
+  { label: 'צור קשר', href: '#contact', section: 'contact' },
+];
+
+const aboutCards = [
+  { label: 'ד״ר עומר מוהדב', number: '01' },
+  { label: 'השיטה — TCM568', number: '02' },
+  { label: 'Nan Jing Academy', number: '03', english: true },
+  { label: 'קהילה', number: '04' },
+];
+
+const shortCourses = [
+  'איזון הורמונלי',
+  'מערכת העיכול העליונה',
+  'דלקות מעיים',
+  'פסיכיאטריה ברפואה הסינית',
 ];
 ---
 
@@ -19,92 +33,233 @@ const navigation = [
       name="description"
       content="Nan Jing Academy — בית ספר לרפואה סינית ויפנית למטפלים מקצועיים."
     />
-    <meta name="theme-color" content="#ebe4da" />
+    <meta name="theme-color" content="#eee8df" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='22' fill='none' stroke='%236b1a1a' stroke-width='8' stroke-linecap='round' stroke-dasharray='118 24'/%3E%3C/svg%3E"
+    />
     <title>{pageTitle}</title>
   </head>
-  <body class="paper-canvas min-h-svh text-neutral-950 antialiased">
-    <div class="home-shell" id="home">
-      <aside class="identity-rail" aria-label="Nan Jing Academy">
-        <a href="#home" class="vertical-brand" aria-label="Nan Jing Academy — דף הבית">
-          <img
-            src="/images/nan-jing-academy-vertical-identity.png"
-            alt="Nan Jing Academy — 南京中醫學院"
-            width="209"
-            height="831"
-          />
+  <body class="paper-canvas text-neutral-950 antialiased">
+    <aside class="identity-rail" aria-label="Nan Jing Academy">
+      <a href="#home" class="vertical-brand" aria-label="Nan Jing Academy — דף הבית">
+        <img
+          src="/images/nan-jing-academy-identity-reference.png"
+          alt="Nan Jing Academy — 南京中醫學院"
+          width="232"
+          height="838"
+        />
+        <span class="rail-title" aria-hidden="true">Nan Jing<br />Academy</span>
+      </a>
+    </aside>
+
+    <div class="site-content">
+      <header class="site-header">
+        <a href="#home" class="mobile-brand" aria-label="Nan Jing Academy — דף הבית">
+          <img src="/images/nan-jing-academy-logo-v2.png" alt="Nan Jing Academy" />
         </a>
-      </aside>
 
-      <div class="home-content">
-        <header class="site-header">
-          <div class="header-inner" dir="ltr">
-            <a href="#home" class="brand mobile-brand" aria-label="Nan Jing Academy — דף הבית">
-              <img
-                src="/images/nan-jing-academy-logo-v2.png"
-                alt="Nan Jing Academy"
-                width="1395"
-                height="375"
-              />
-            </a>
+        <nav class="desktop-nav" aria-label="ניווט ראשי">
+          {
+            navigation.map((item, index) => (
+              <a
+                href={item.href}
+                data-section-link={item.section}
+                class:list={{ active: index === 0 }}
+                aria-current={index === 0 ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            ))
+          }
+        </nav>
 
-            <nav class="desktop-nav" aria-label="ניווט ראשי" dir="rtl">
+        <details class="mobile-menu">
+          <summary>
+            <span>תפריט</span>
+            <span class="menu-lines" aria-hidden="true"></span>
+          </summary>
+          <nav aria-label="ניווט למובייל">
+            {
+              navigation.map((item, index) => (
+                <a
+                  href={item.href}
+                  data-section-link={item.section}
+                  class:list={{ active: index === 0 }}
+                  aria-current={index === 0 ? 'page' : undefined}
+                >
+                  {item.label}
+                </a>
+              ))
+            }
+          </nav>
+        </details>
+      </header>
+
+      <main>
+        <section class="page-section hero-section" id="home" data-section="home" aria-label="Nan Jing Academy">
+          <div class="calligraphy-mark" aria-hidden="true">感</div>
+          <div class="hero-frame">
+            <img
+              src="/images/abdominal-diagnosis-hero.png"
+              alt="אבחון בטן במסגרת הרפואה הסינית והיפנית"
+              width="954"
+              height="626"
+              fetchpriority="high"
+            />
+          </div>
+        </section>
+
+        <section class="page-section about-section" id="about" data-section="about" aria-labelledby="about-title">
+          <div class="calligraphy-mark" aria-hidden="true">知</div>
+          <div class="section-inner">
+            <header class="section-heading">
+              <p>02</p>
+              <h2 id="about-title">אודות</h2>
+            </header>
+
+            <div class="about-grid">
               {
-                navigation.map((item) => (
-                  <a
-                    href={item.href}
-                    aria-current={item.active ? 'page' : undefined}
-                    class:list={{ active: item.active }}
-                  >
-                    {item.label}
-                  </a>
+                aboutCards.map((card) => (
+                  <button class="paper-card about-card" type="button">
+                    <span class="corner-mark" aria-hidden="true"></span>
+                    <span class="card-number">{card.number}</span>
+                    <span class:list={{ 'card-title': true, english: card.english }}>{card.label}</span>
+                    <span class="card-arrow" aria-hidden="true">←</span>
+                    <span class="seal" aria-hidden="true">學</span>
+                  </button>
                 ))
               }
-            </nav>
-
-            <details class="mobile-menu" dir="rtl">
-              <summary>
-                <span>תפריט</span>
-                <span class="menu-lines" aria-hidden="true"></span>
-              </summary>
-              <nav aria-label="ניווט למובייל">
-                {
-                  navigation.map((item) => (
-                    <a href={item.href} aria-current={item.active ? 'page' : undefined}>
-                      {item.label}
-                    </a>
-                  ))
-                }
-              </nav>
-            </details>
-          </div>
-        </header>
-
-        <main class="hero-stage">
-          <div class="burgundy-horizon" aria-hidden="true"></div>
-
-          <section class="hero-layout" aria-label="Nan Jing Academy" dir="ltr">
-            <div class="photo-column">
-              <figure class="photo-frame">
-                <img
-                  src="/images/abdominal-acupuncture-hero.jpg"
-                  alt="טיפול בדיקור בטן במסגרת הרפואה הסינית"
-                  width="968"
-                  height="632"
-                  fetchpriority="high"
-                />
-                <figcaption class="photo-copy" dir="rtl">
-                  <h1>לעצור לדמיין</h1>
-                  <p>ולהתחיל להרגיש את הגוף</p>
-                </figcaption>
-              </figure>
-              <p class="academy-signature">Nan Jing Academy</p>
-              <a class="scroll-cue" href="#about" aria-label="גלילה לחלק הבא">
-                <span aria-hidden="true"></span>
-              </a>
             </div>
-          </section>
-        </main>
-      </div>
+          </div>
+        </section>
+
+        <section class="page-section courses-section" id="courses" data-section="courses" aria-labelledby="courses-title">
+          <div class="calligraphy-mark" aria-hidden="true">學</div>
+          <div class="section-inner">
+            <header class="section-heading">
+              <p>03</p>
+              <h2 id="courses-title">קורסים</h2>
+            </header>
+
+            <div class="courses-layout">
+              <div class="core-courses">
+                <h3>קורסי ליבה</h3>
+                <div class="core-grid">
+                  <button class="paper-card course-card" type="button">
+                    <span class="corner-mark" aria-hidden="true"></span>
+                    <span class="course-index">I</span>
+                    <span class="card-title">אבחנות א׳</span>
+                    <span class="card-arrow" aria-hidden="true">←</span>
+                    <span class="seal" aria-hidden="true">學</span>
+                  </button>
+                  <button class="paper-card course-card" type="button">
+                    <span class="corner-mark" aria-hidden="true"></span>
+                    <span class="course-index">II</span>
+                    <span class="card-title">אבחנות ב׳</span>
+                    <span class="card-arrow" aria-hidden="true">←</span>
+                    <span class="seal" aria-hidden="true">學</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="short-courses">
+                <h3>קורסים קצרים</h3>
+                <div class="short-list">
+                  {
+                    shortCourses.map((course, index) => (
+                      <button class="paper-card short-course" type="button">
+                        <span class="short-number">0{index + 1}</span>
+                        <span>{course}</span>
+                        <span class="card-arrow" aria-hidden="true">←</span>
+                      </button>
+                    ))
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page-section contact-section" id="contact" data-section="contact" aria-labelledby="contact-title">
+          <div class="calligraphy-mark" aria-hidden="true">問</div>
+          <div class="section-inner">
+            <header class="section-heading">
+              <p>04</p>
+              <h2 id="contact-title">צור קשר</h2>
+            </header>
+
+            <form class="contact-panel" id="contact-form">
+              <span class="corner-mark top-right" aria-hidden="true"></span>
+              <span class="corner-mark bottom-left" aria-hidden="true"></span>
+              <div class="contact-intro">
+                <h3>לפרטים נוספים והרשמה</h3>
+                <p>השאירו פרטים ונחזור אליכם בהקדם</p>
+              </div>
+
+              <div class="form-fields">
+                <label>
+                  <span>שם מלא</span>
+                  <input name="name" type="text" autocomplete="name" required />
+                </label>
+                <label>
+                  <span>אימייל</span>
+                  <input name="email" type="email" autocomplete="email" required />
+                </label>
+                <label>
+                  <span>טלפון</span>
+                  <input name="phone" type="tel" autocomplete="tel" required />
+                </label>
+                <label class="message-field">
+                  <span>שאלות שיש לך</span>
+                  <textarea name="message" rows="4"></textarea>
+                </label>
+              </div>
+
+              <button class="submit-button" type="submit">שלחו</button>
+              <p class="form-status" role="status" aria-live="polite"></p>
+              <span class="seal contact-seal" aria-hidden="true">學</span>
+            </form>
+          </div>
+        </section>
+      </main>
     </div>
+
+    <script>
+      const links = Array.from(document.querySelectorAll('[data-section-link]'));
+      const sections = Array.from(document.querySelectorAll('[data-section]'));
+
+      const setActiveSection = (sectionId) => {
+        links.forEach((link) => {
+          const isActive = link.getAttribute('data-section-link') === sectionId;
+          link.classList.toggle('active', isActive);
+          if (isActive) link.setAttribute('aria-current', 'page');
+          else link.removeAttribute('aria-current');
+        });
+      };
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+          if (visible) setActiveSection(visible.target.id);
+        },
+        { rootMargin: '-32% 0px -52% 0px', threshold: [0, 0.2, 0.5] },
+      );
+
+      sections.forEach((section) => observer.observe(section));
+
+      document.querySelectorAll('.mobile-menu a').forEach((link) => {
+        link.addEventListener('click', () => link.closest('details')?.removeAttribute('open'));
+      });
+
+      const form = document.querySelector('#contact-form');
+      form?.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const status = form.querySelector('.form-status');
+        if (status) status.textContent = 'הטופס מוכן — החיבור לשליחת הפרטים יתווסף בשלב הבא.';
+      });
+    </script>
   </body>
 </html>
