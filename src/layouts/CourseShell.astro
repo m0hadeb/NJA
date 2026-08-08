@@ -1,0 +1,99 @@
+---
+import '@/styles/global.css';
+
+const navigation = [
+  { label: 'דף הבית', href: '/' },
+  { label: 'אודות', href: '/about' },
+  { label: 'קורסים', href: '/#courses', active: true },
+  { label: 'צור קשר', href: '/#contact' },
+];
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f0ece5" />
+    <title>{title} | Nan Jing Academy</title>
+  </head>
+  <body class="paper-canvas text-neutral-950 antialiased course-detail-page">
+    <aside class="identity-rail" aria-label="Nan Jing Academy">
+      <a href="/" class="vertical-brand" aria-label="Nan Jing Academy — דף הבית">
+        <img
+          src="/images/nan-jing-academy-identity-reference.png"
+          alt="Nan Jing Academy — 南京中醫學院"
+          width="232"
+          height="838"
+        />
+      </a>
+    </aside>
+
+    <div class="site-content">
+      <header class="site-header">
+        <a href="/" class="mobile-brand" aria-label="Nan Jing Academy — דף הבית">
+          <img src="/images/nan-jing-academy-logo-v2.png" alt="Nan Jing Academy" />
+        </a>
+
+        <nav class="desktop-nav" aria-label="ניווט ראשי">
+          {
+            navigation.map((item) => (
+              <a href={item.href} class:list={{ active: item.active }} aria-current={item.active ? 'page' : undefined}>
+                {item.label}
+              </a>
+            ))
+          }
+        </nav>
+
+        <details class="mobile-menu">
+          <summary>
+            <span>תפריט</span>
+            <span class="menu-lines" aria-hidden="true"></span>
+          </summary>
+          <nav aria-label="ניווט למובייל">
+            {
+              navigation.map((item) => (
+                <a href={item.href} class:list={{ active: item.active }} aria-current={item.active ? 'page' : undefined}>
+                  {item.label}
+                </a>
+              ))
+            }
+          </nav>
+        </details>
+      </header>
+
+      <main>
+        <slot />
+      </main>
+    </div>
+
+    <script>
+      document.querySelectorAll('.mobile-menu a').forEach((link) => {
+        link.addEventListener('click', () => link.closest('details')?.removeAttribute('open'));
+      });
+
+      const alignHashSection = () => {
+        if (!window.location.hash) return;
+        const section = document.querySelector(window.location.hash);
+        if (section instanceof HTMLElement) {
+          const root = document.documentElement;
+          const previousBehavior = root.style.scrollBehavior;
+          root.style.scrollBehavior = 'auto';
+          section.scrollIntoView({ block: 'start', behavior: 'auto' });
+          requestAnimationFrame(() => { root.style.scrollBehavior = previousBehavior; });
+        }
+      };
+
+      window.addEventListener('hashchange', () => requestAnimationFrame(alignHashSection));
+      requestAnimationFrame(() => requestAnimationFrame(alignHashSection));
+    </script>
+  </body>
+</html>

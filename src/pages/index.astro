@@ -10,17 +10,17 @@ const navigation = [
 ];
 
 const aboutCards = [
-  { label: 'דרור אומר מהודב' },
-  { label: 'Nan Jing Academy', english: true },
-  { label: 'השיטה — TCR 568' },
-  { label: 'קהילה' },
+  { label: 'דרור אומר מוהדב', href: '/about#dror' },
+  { label: 'Nan Jing Academy', href: '/about#academy', english: true },
+  { label: 'השיטה — TCM 568', href: '/about#method' },
+  { label: 'קהילה', href: '/about#community' },
 ];
 
 const shortCourses = [
-  'איזון הורמונלי',
-  'מערכת העיכול העליונה',
-  'דלקות מעיים',
-  'פסיכיאטריה ברפואה הסינית',
+  { label: 'איזון הורמונלי', href: '/courses/short#hormonal-balance' },
+  { label: 'מערכת העיכול העליונה', href: '/courses/short#upper-digestive' },
+  { label: 'דלקות מעיים', href: '/courses/short#intestinal-inflammation' },
+  { label: 'פסיכיאטריה ברפואה הסינית', href: '/courses/short#chinese-medicine-psychiatry' },
 ];
 ---
 
@@ -99,13 +99,19 @@ const shortCourses = [
       <main>
         <section class="page-section hero-section" id="home" data-section="home" aria-label="Nan Jing Academy">
           <div class="hero-frame">
-            <img
-              src="/images/abdominal-diagnosis-hero.png"
-              alt="אבחון בטן במסגרת הרפואה הסינית והיפנית"
-              width="954"
-              height="626"
-              fetchpriority="high"
-            />
+            <video
+              class="hero-video"
+              src="/videos/nan-jing-academy-home-2026.mp4"
+              poster="/images/abdominal-diagnosis-hero.png"
+              aria-label="אבחון וטיפול במסגרת Nan Jing Academy"
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="metadata"
+            >
+              הדפדפן שלך אינו תומך בהצגת וידאו.
+            </video>
           </div>
         </section>
 
@@ -118,12 +124,12 @@ const shortCourses = [
             <div class="about-grid">
               {
                 aboutCards.map((card) => (
-                  <button class="paper-card about-card" type="button">
+                  <a class="paper-card about-card" href={card.href}>
                     <span class="corner-mark" aria-hidden="true"></span>
                     <span class:list={{ 'card-title': true, english: card.english }}>{card.label}</span>
                     <span class="card-arrow" aria-hidden="true">←</span>
                     <span class="seal" aria-hidden="true">學</span>
-                  </button>
+                  </a>
                 ))
               }
             </div>
@@ -140,30 +146,30 @@ const shortCourses = [
               <div class="core-courses">
                 <h3>קורס שנתי</h3>
                 <div class="core-grid">
-                  <button class="paper-card course-card" type="button">
+                  <a class="paper-card course-card" href="/courses/advanced-a">
                     <span class="corner-mark" aria-hidden="true"></span>
                     <span class="card-title">אבחנות מתקדמות א׳</span>
                     <span class="card-arrow" aria-hidden="true">←</span>
                     <span class="seal" aria-hidden="true">學</span>
-                  </button>
-                  <button class="paper-card course-card" type="button">
+                  </a>
+                  <a class="paper-card course-card" href="/courses/advanced-b">
                     <span class="corner-mark" aria-hidden="true"></span>
                     <span class="card-title">אבחנות מתקדמות ב׳</span>
                     <span class="card-arrow" aria-hidden="true">←</span>
                     <span class="seal" aria-hidden="true">學</span>
-                  </button>
+                  </a>
                 </div>
               </div>
 
               <div class="short-courses">
-                <h3>קורסים קצרים</h3>
+                <h3><a href="/courses/short">קורסים קצרים</a></h3>
                 <div class="short-list">
                   {
                     shortCourses.map((course) => (
-                      <button class="paper-card short-course" type="button">
-                        <span>{course}</span>
+                      <a class="paper-card short-course" href={course.href}>
+                        <span>{course.label}</span>
                         <span class="card-arrow" aria-hidden="true">←</span>
-                      </button>
+                      </a>
                     ))
                   }
                 </div>
@@ -263,6 +269,14 @@ const shortCourses = [
 
       sections.forEach((section) => observer.observe(section));
 
+      const heroVideo = document.querySelector('.hero-video');
+      if (heroVideo instanceof HTMLVideoElement) {
+        const revealVideo = () => heroVideo.classList.add('is-ready');
+        heroVideo.playbackRate = 0.78;
+        if (heroVideo.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) revealVideo();
+        else heroVideo.addEventListener('loadeddata', revealVideo, { once: true });
+      }
+
       document.querySelectorAll('.mobile-menu a').forEach((link) => {
         link.addEventListener('click', () => link.closest('details')?.removeAttribute('open'));
       });
@@ -275,6 +289,7 @@ const shortCourses = [
       });
 
       const alignHashSection = () => {
+        if (!window.location.hash) return;
         const section = document.querySelector(window.location.hash);
         if (section instanceof HTMLElement) section.scrollIntoView({ block: 'start', behavior: 'auto' });
       };

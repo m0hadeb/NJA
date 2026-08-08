@@ -1,0 +1,138 @@
+---
+import '@/styles/global.css';
+
+const navigation = [
+  { label: 'דף הבית', href: '/' },
+  { label: 'אודות', href: '/about', active: true },
+  { label: 'קורסים', href: '/#courses' },
+  { label: 'צור קשר', href: '/#contact' },
+];
+
+const aboutSections = [
+  {
+    id: 'dror',
+    title: 'דרור אומר מוהדב',
+    eyebrow: 'היכרות אישית ומקצועית',
+    placeholder: 'כאן נוסיף את הסיפור המקצועי, הדרך והניסיון של דרור אומר מוהדב.',
+  },
+  {
+    id: 'academy',
+    title: 'Nan Jing Academy',
+    eyebrow: 'בית ספר לרפואה סינית ויפנית',
+    placeholder: 'כאן נוסיף את סיפור האקדמיה, מטרותיה והגישה שמובילה את הלימודים.',
+    english: true,
+  },
+  {
+    id: 'method',
+    title: 'השיטה — TCM 568',
+    eyebrow: 'הגישה הקלינית',
+    placeholder: 'כאן נוסיף את עקרונות השיטה, מבנה הלימוד והיישום הקליני שלה.',
+  },
+  {
+    id: 'community',
+    title: 'הקהילה',
+    eyebrow: 'קהילת Nan Jing Academy',
+    placeholder: 'כאן נוסיף אינפורמציה על הקהילה, הפעילויות והחיבור בין המטפלים.',
+  },
+];
+---
+
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="אודות Nan Jing Academy — דרור אומר מוהדב, האקדמיה, שיטת TCM 568 והקהילה." />
+    <meta name="theme-color" content="#f0ece5" />
+    <title>אודות | Nan Jing Academy</title>
+  </head>
+  <body class="paper-canvas text-neutral-950 antialiased about-detail-page">
+    <aside class="identity-rail" aria-label="Nan Jing Academy">
+      <a href="/" class="vertical-brand" aria-label="Nan Jing Academy — דף הבית">
+        <img
+          src="/images/nan-jing-academy-identity-reference.png"
+          alt="Nan Jing Academy — 南京中醫學院"
+          width="232"
+          height="838"
+        />
+      </a>
+    </aside>
+
+    <div class="site-content">
+      <header class="site-header">
+        <a href="/" class="mobile-brand" aria-label="Nan Jing Academy — דף הבית">
+          <img src="/images/nan-jing-academy-logo-v2.png" alt="Nan Jing Academy" />
+        </a>
+
+        <nav class="desktop-nav" aria-label="ניווט ראשי">
+          {
+            navigation.map((item) => (
+              <a href={item.href} class:list={{ active: item.active }} aria-current={item.active ? 'page' : undefined}>
+                {item.label}
+              </a>
+            ))
+          }
+        </nav>
+
+        <details class="mobile-menu">
+          <summary>
+            <span>תפריט</span>
+            <span class="menu-lines" aria-hidden="true"></span>
+          </summary>
+          <nav aria-label="ניווט למובייל">
+            {
+              navigation.map((item) => (
+                <a href={item.href} class:list={{ active: item.active }} aria-current={item.active ? 'page' : undefined}>
+                  {item.label}
+                </a>
+              ))
+            }
+          </nav>
+        </details>
+      </header>
+
+      <main>
+        {
+          aboutSections.map((section, index) => (
+            <section
+              class:list={{ 'page-section': true, 'about-detail-section': true, alternate: index % 2 === 1 }}
+              id={section.id}
+              aria-labelledby={`${section.id}-title`}
+            >
+              <div class="about-detail-accent" aria-hidden="true"></div>
+              <div class="about-detail-inner">
+                <p class="about-detail-eyebrow">{section.eyebrow}</p>
+                <h1 class:list={{ 'about-detail-title': true, english: section.english }} id={`${section.id}-title`}>
+                  {section.title}
+                </h1>
+                <div class="about-detail-rule" aria-hidden="true"></div>
+                <p class="about-detail-placeholder">{section.placeholder}</p>
+                <span class="seal about-detail-seal" aria-hidden="true">學</span>
+              </div>
+            </section>
+          ))
+        }
+      </main>
+    </div>
+
+    <script>
+      document.querySelectorAll('.mobile-menu a').forEach((link) => {
+        link.addEventListener('click', () => link.closest('details')?.removeAttribute('open'));
+      });
+
+      const alignHashSection = () => {
+        const section = document.querySelector(window.location.hash || '#dror');
+        if (section instanceof HTMLElement) {
+          const root = document.documentElement;
+          const previousBehavior = root.style.scrollBehavior;
+          root.style.scrollBehavior = 'auto';
+          section.scrollIntoView({ block: 'start', behavior: 'auto' });
+          requestAnimationFrame(() => { root.style.scrollBehavior = previousBehavior; });
+        }
+      };
+
+      window.addEventListener('hashchange', () => requestAnimationFrame(alignHashSection));
+      requestAnimationFrame(() => requestAnimationFrame(alignHashSection));
+    </script>
+  </body>
+</html>
