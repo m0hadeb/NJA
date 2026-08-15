@@ -1,5 +1,7 @@
 ---
 import '@/styles/global.css';
+import ContentDetailSection from '@/components/ContentDetailSection.astro';
+import { getContentPages, renderCmsBody } from '@/lib/cms';
 
 const pageTitle = 'Nan Jing Academy';
 const navigation = [
@@ -10,11 +12,42 @@ const navigation = [
 ];
 
 const aboutCards = [
-  { label: 'דרור אומר מוהדב', href: '/about#dror' },
-  { label: 'Nan Jing Academy', href: '/about#academy', english: true },
-  { label: 'השיטה — TCM 568', href: '/about#method' },
-  { label: 'קהילה', href: '/about#community' },
+  { label: 'דרור אומר מוהדב', href: '#dror' },
+  { label: 'Nan Jing Academy', href: '#academy', english: true },
+  { label: 'השיטה — TCM 568', href: '#method' },
+  { label: 'קהילה', href: '#community' },
 ];
+
+const aboutSections = [
+  {
+    id: 'dror',
+    title: 'דרור אומר מוהדב',
+    eyebrow: 'היכרות אישית ומקצועית',
+    placeholder: 'כאן נוסיף את הסיפור המקצועי, הדרך והניסיון של דרור אומר מוהדב.',
+  },
+  {
+    id: 'academy',
+    title: 'Nan Jing Academy',
+    eyebrow: 'בית ספר לרפואה סינית ויפנית',
+    placeholder: 'כאן נוסיף את סיפור האקדמיה, מטרותיה והגישה שמובילה את הלימודים.',
+    english: true,
+  },
+  {
+    id: 'method',
+    title: 'השיטה — TCM 568',
+    eyebrow: 'הגישה הקלינית',
+    placeholder: 'כאן נוסיף את עקרונות השיטה, מבנה הלימוד והיישום הקליני שלה.',
+  },
+  {
+    id: 'community',
+    title: 'הקהילה',
+    eyebrow: 'קהילת Nan Jing Academy',
+    placeholder: 'כאן נוסיף אינפורמציה על הקהילה, הפעילויות והחיבור בין המטפלים.',
+  },
+];
+
+const cmsPages = await getContentPages(aboutSections.map((section) => `about-${section.id}`));
+const cmsByKey = new Map(cmsPages.map((page) => [page.pageKey, page]));
 
 const shortCourses = [
   { label: 'איזון הורמונלי', href: '/courses/short#hormonal-balance' },
@@ -101,7 +134,7 @@ const shortCourses = [
           <div class="hero-frame">
             <video
               class="hero-video"
-              src="/videos/nan-jing-academy-home-2026.mp4"
+              src="/videos/nan-jing-academy-home-2026.mp4?v=2"
               poster="/images/abdominal-diagnosis-hero.png"
               aria-label="אבחון וטיפול במסגרת Nan Jing Academy"
               autoplay
@@ -128,13 +161,34 @@ const shortCourses = [
                     <span class="corner-mark" aria-hidden="true"></span>
                     <span class:list={{ 'card-title': true, english: card.english }}>{card.label}</span>
                     <span class="card-arrow" aria-hidden="true">←</span>
-                    <span class="seal" aria-hidden="true">學</span>
+                    <span class="seal" aria-hidden="true"><span class="seal-column">南京中</span><span class="seal-column">醫學院</span></span>
                   </a>
                 ))
               }
             </div>
           </div>
         </section>
+
+        {
+          aboutSections.map((section) => {
+            const cmsPage = cmsByKey.get(`about-${section.id}`);
+            return (
+              <ContentDetailSection
+                id={section.id}
+                dataSection="about"
+                title={cmsPage?.title ?? section.title}
+                eyebrow={cmsPage?.eyebrow ?? section.eyebrow}
+                body={section.placeholder}
+                bodyHtml={renderCmsBody(cmsPage)}
+                english={section.english}
+                imageSrc={cmsPage?.imageUrl}
+                imageAlt={cmsPage?.imageAlt ?? ''}
+                videoSrc={cmsPage?.videoFileUrl ?? cmsPage?.videoUrl}
+                imageCaption={cmsPage?.mediaCaption}
+              />
+            );
+          })
+        }
 
         <section class="page-section courses-section" id="courses" data-section="courses" aria-labelledby="courses-title">
           <div class="section-inner">
@@ -150,13 +204,13 @@ const shortCourses = [
                     <span class="corner-mark" aria-hidden="true"></span>
                     <span class="card-title">אבחנות מתקדמות א׳</span>
                     <span class="card-arrow" aria-hidden="true">←</span>
-                    <span class="seal" aria-hidden="true">學</span>
+                    <span class="seal" aria-hidden="true"><span class="seal-column">南京中</span><span class="seal-column">醫學院</span></span>
                   </a>
                   <a class="paper-card course-card" href="/courses/advanced-b">
                     <span class="corner-mark" aria-hidden="true"></span>
                     <span class="card-title">אבחנות מתקדמות ב׳</span>
                     <span class="card-arrow" aria-hidden="true">←</span>
-                    <span class="seal" aria-hidden="true">學</span>
+                    <span class="seal" aria-hidden="true"><span class="seal-column">南京中</span><span class="seal-column">醫學院</span></span>
                   </a>
                 </div>
               </div>
@@ -169,6 +223,7 @@ const shortCourses = [
                       <a class="paper-card short-course" href={course.href}>
                         <span>{course.label}</span>
                         <span class="card-arrow" aria-hidden="true">←</span>
+                        <span class="seal" aria-hidden="true"><span class="seal-column">南京中</span><span class="seal-column">醫學院</span></span>
                       </a>
                     ))
                   }
@@ -237,7 +292,7 @@ const shortCourses = [
 
               <button class="submit-button" type="submit">שלחו</button>
               <p class="form-status" role="status" aria-live="polite"></p>
-              <span class="seal contact-seal" aria-hidden="true">學</span>
+              <span class="seal contact-seal" aria-hidden="true"><span class="seal-column">南京中</span><span class="seal-column">醫學院</span></span>
             </form>
           </div>
         </section>
@@ -262,7 +317,9 @@ const shortCourses = [
           const visible = entries
             .filter((entry) => entry.isIntersecting)
             .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-          if (visible) setActiveSection(visible.target.id);
+          if (visible) {
+            setActiveSection(visible.target.getAttribute('data-section') ?? visible.target.id);
+          }
         },
         { rootMargin: '-32% 0px -52% 0px', threshold: [0, 0.2, 0.5] },
       );

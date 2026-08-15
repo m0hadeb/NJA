@@ -1,12 +1,17 @@
 ---
 import CourseShell from '@/layouts/CourseShell.astro';
+import ContentDetailSection from '@/components/ContentDetailSection.astro';
+import { getContentPages, renderCmsBody } from '@/lib/cms';
 
 const shortCourses = [
-  { id: 'hormonal-balance', title: 'איזון הורמונלי' },
-  { id: 'upper-digestive', title: 'מערכת העיכול העליונה' },
-  { id: 'intestinal-inflammation', title: 'דלקות מעיים' },
-  { id: 'chinese-medicine-psychiatry', title: 'פסיכיאטריה ברפואה הסינית' },
+  { id: 'hormonal-balance', pageKey: 'course-short-hormonal', title: 'איזון הורמונלי' },
+  { id: 'upper-digestive', pageKey: 'course-short-upper-digestive', title: 'מערכת העיכול העליונה' },
+  { id: 'intestinal-inflammation', pageKey: 'course-short-intestinal', title: 'דלקות מעיים' },
+  { id: 'chinese-medicine-psychiatry', pageKey: 'course-short-psychiatry', title: 'פסיכיאטריה ברפואה הסינית' },
 ];
+
+const cmsPages = await getContentPages(shortCourses.map((course) => course.pageKey));
+const cmsByKey = new Map(cmsPages.map((page) => [page.pageKey, page]));
 ---
 
 <CourseShell
@@ -14,22 +19,23 @@ const shortCourses = [
   description="הקורסים הקצרים של Nan Jing Academy, לפי סדר תוכנית הלימודים."
 >
   {
-    shortCourses.map((course, index) => (
-      <section
-        class:list={{ 'page-section': true, 'course-detail-section': true, alternate: index % 2 === 1 }}
-        id={course.id}
-        aria-labelledby={`${course.id}-title`}
-      >
-        <div class="course-detail-accent" aria-hidden="true"></div>
-        <div class="course-detail-inner">
-          <p class="course-detail-eyebrow">קורסים קצרים</p>
-          <h1 id={`${course.id}-title`}>{course.title}</h1>
-          <div class="course-detail-rule" aria-hidden="true"></div>
-          <p class="course-detail-placeholder">כאן נוסיף את תוכן הקורס, מועדים, היקף הלימודים ופרטי ההרשמה.</p>
-          <a class="course-back-link" href="/#courses">חזרה לכל הקורסים</a>
-          <span class="seal course-detail-seal" aria-hidden="true">學</span>
-        </div>
-      </section>
-    ))
+    shortCourses.map((course) => {
+      const cmsPage = cmsByKey.get(course.pageKey);
+      return (
+        <ContentDetailSection
+          id={course.id}
+          title={cmsPage?.title ?? course.title}
+          eyebrow={cmsPage?.eyebrow ?? 'קורסים קצרים'}
+          body="כאן נוסיף את תוכן הקורס, מועדים, היקף הלימודים ופרטי ההרשמה."
+          bodyHtml={renderCmsBody(cmsPage)}
+          imageSrc={cmsPage?.imageUrl}
+          imageAlt={cmsPage?.imageAlt ?? ''}
+          videoSrc={cmsPage?.videoFileUrl ?? cmsPage?.videoUrl}
+          imageCaption={cmsPage?.mediaCaption}
+          backHref="/#courses"
+          backLabel="חזרה לכל הקורסים"
+        />
+      );
+    })
   }
 </CourseShell>

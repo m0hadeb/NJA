@@ -1,5 +1,7 @@
 ---
 import '@/styles/global.css';
+import ContentDetailSection from '@/components/ContentDetailSection.astro';
+import { getContentPages, renderCmsBody } from '@/lib/cms';
 
 const navigation = [
   { label: 'דף הבית', href: '/' },
@@ -35,6 +37,9 @@ const aboutSections = [
     placeholder: 'כאן נוסיף אינפורמציה על הקהילה, הפעילויות והחיבור בין המטפלים.',
   },
 ];
+
+const cmsPages = await getContentPages(aboutSections.map((section) => `about-${section.id}`));
+const cmsByKey = new Map(cmsPages.map((page) => [page.pageKey, page]));
 ---
 
 <!doctype html>
@@ -93,24 +98,23 @@ const aboutSections = [
 
       <main>
         {
-          aboutSections.map((section, index) => (
-            <section
-              class:list={{ 'page-section': true, 'about-detail-section': true, alternate: index % 2 === 1 }}
-              id={section.id}
-              aria-labelledby={`${section.id}-title`}
-            >
-              <div class="about-detail-accent" aria-hidden="true"></div>
-              <div class="about-detail-inner">
-                <p class="about-detail-eyebrow">{section.eyebrow}</p>
-                <h1 class:list={{ 'about-detail-title': true, english: section.english }} id={`${section.id}-title`}>
-                  {section.title}
-                </h1>
-                <div class="about-detail-rule" aria-hidden="true"></div>
-                <p class="about-detail-placeholder">{section.placeholder}</p>
-                <span class="seal about-detail-seal" aria-hidden="true">學</span>
-              </div>
-            </section>
-          ))
+          aboutSections.map((section) => {
+            const cmsPage = cmsByKey.get(`about-${section.id}`);
+            return (
+              <ContentDetailSection
+                id={section.id}
+                title={cmsPage?.title ?? section.title}
+                eyebrow={cmsPage?.eyebrow ?? section.eyebrow}
+                body={section.placeholder}
+                bodyHtml={renderCmsBody(cmsPage)}
+                english={section.english}
+                imageSrc={cmsPage?.imageUrl}
+                imageAlt={cmsPage?.imageAlt ?? ''}
+                videoSrc={cmsPage?.videoFileUrl ?? cmsPage?.videoUrl}
+                imageCaption={cmsPage?.mediaCaption}
+              />
+            );
+          })
         }
       </main>
     </div>

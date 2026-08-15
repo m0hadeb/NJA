@@ -1,20 +1,25 @@
 ---
 import CourseShell from '@/layouts/CourseShell.astro';
+import ContentDetailSection from '@/components/ContentDetailSection.astro';
+import { getContentPages, renderCmsBody } from '@/lib/cms';
+
+const [cmsPage] = await getContentPages(['course-advanced-b']);
 ---
 
 <CourseShell
   title="אבחנות מתקדמות ב׳"
   description="אבחנות מתקדמות ב׳ — קורס שנתי של Nan Jing Academy."
 >
-  <section class="page-section course-detail-section alternate" aria-labelledby="advanced-b-title">
-    <div class="course-detail-accent" aria-hidden="true"></div>
-    <div class="course-detail-inner">
-      <p class="course-detail-eyebrow">קורס שנתי</p>
-      <h1 id="advanced-b-title">אבחנות מתקדמות ב׳</h1>
-      <div class="course-detail-rule" aria-hidden="true"></div>
-      <p class="course-detail-placeholder">כאן נוסיף את פרטי הקורס, תוכנית הלימודים, מועדים ופרטי הרשמה.</p>
-      <a class="course-back-link" href="/#courses">חזרה לכל הקורסים</a>
-      <span class="seal course-detail-seal" aria-hidden="true">學</span>
-    </div>
-  </section>
+  <ContentDetailSection
+    title={cmsPage?.title ?? 'אבחנות מתקדמות ב׳'}
+    eyebrow={cmsPage?.eyebrow ?? 'קורס שנתי'}
+    body="כאן נוסיף את פרטי הקורס, תוכנית הלימודים, מועדים ופרטי הרשמה."
+    bodyHtml={renderCmsBody(cmsPage)}
+    imageSrc={cmsPage?.imageUrl}
+    imageAlt={cmsPage?.imageAlt ?? ''}
+    videoSrc={cmsPage?.videoFileUrl ?? cmsPage?.videoUrl}
+    imageCaption={cmsPage?.mediaCaption}
+    backHref="/#courses"
+    backLabel="חזרה לכל הקורסים"
+  />
 </CourseShell>
