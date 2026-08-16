@@ -12,10 +12,16 @@ const navigation = [
 ];
 
 const aboutCards = [
-  { label: 'דרור אומר מוהדב', href: '#dror' },
-  { label: 'Nan Jing Academy', href: '#academy', english: true },
-  { label: 'השיטה — TCM 568', href: '#method' },
-  { label: 'קהילה', href: '#community' },
+  { label: 'דרור אומר מוהדב', href: '#dror', image: '/images/dror-omer-mohadeb.png' },
+  { label: 'Nan Jing Academy', href: '#academy', image: '/images/nan-jing-academy-card-paper.png', english: true, artwork: true },
+  {
+    label: 'השיטה — TCM 568',
+    href: '#method',
+    image: '/media/tcm568/tcm568_final.png',
+    video: '/videos/tcm568-transition.mp4',
+    videoWebm: '/videos/tcm568-transition.webm',
+  },
+  { label: 'קהילה', href: '#community', image: '/images/nja-community-classroom.png' },
 ];
 
 const aboutSections = [
@@ -24,6 +30,7 @@ const aboutSections = [
     title: 'דרור אומר מוהדב',
     eyebrow: 'היכרות אישית ומקצועית',
     placeholder: 'כאן נוסיף את הסיפור המקצועי, הדרך והניסיון של דרור אומר מוהדב.',
+    imageSrc: '/images/dror-omer-mohadeb.png',
   },
   {
     id: 'academy',
@@ -31,6 +38,8 @@ const aboutSections = [
     eyebrow: 'בית ספר לרפואה סינית ויפנית',
     placeholder: 'כאן נוסיף את סיפור האקדמיה, מטרותיה והגישה שמובילה את הלימודים.',
     english: true,
+    imageSrc: '/images/nja-academy-vertical-brand.png',
+    mediaFit: 'contain',
   },
   {
     id: 'method',
@@ -43,6 +52,7 @@ const aboutSections = [
     title: 'הקהילה',
     eyebrow: 'קהילת Nan Jing Academy',
     placeholder: 'כאן נוסיף אינפורמציה על הקהילה, הפעילויות והחיבור בין המטפלים.',
+    imageSrc: '/images/nja-community-classroom.png',
   },
 ];
 
@@ -157,11 +167,29 @@ const shortCourses = [
             <div class="about-grid">
               {
                 aboutCards.map((card) => (
-                  <a class="paper-card about-card" href={card.href}>
-                    <span class="corner-mark" aria-hidden="true"></span>
-                    <span class:list={{ 'card-title': true, english: card.english }}>{card.label}</span>
-                    <span class="card-arrow" aria-hidden="true">←</span>
-                    <span class="seal" aria-hidden="true"><span class="seal-column">南京中</span><span class="seal-column">醫學院</span></span>
+                  <a class:list={{ 'about-card': true, 'image-about-card': true, 'image-contain': card.contain, 'image-artwork': card.artwork }} href={card.href}>
+                    {
+                      card.video ? (
+                        <video
+                          class="about-card-image"
+                          autoplay
+                          muted
+                          loop
+                          playsinline
+                          preload="metadata"
+                          poster={card.image}
+                          aria-hidden="true"
+                        >
+                          {card.videoWebm && <source src={card.videoWebm} type="video/webm" />}
+                          <source src={card.video} type="video/mp4" />
+                        </video>
+                      ) : (
+                        <img class="about-card-image" src={card.image} alt="" loading="lazy" />
+                      )
+                    }
+                    {!card.artwork && <span class="about-card-shade" aria-hidden="true"></span>}
+                    {!card.artwork && <span class:list={{ 'card-title': true, english: card.english }}>{card.label}</span>}
+                    {!card.artwork && <span class="about-card-line" aria-hidden="true"></span>}
                   </a>
                 ))
               }
@@ -181,10 +209,11 @@ const shortCourses = [
                 body={section.placeholder}
                 bodyHtml={renderCmsBody(cmsPage)}
                 english={section.english}
-                imageSrc={cmsPage?.imageUrl}
+                imageSrc={cmsPage?.imageUrl ?? section.imageSrc}
                 imageAlt={cmsPage?.imageAlt ?? ''}
                 videoSrc={cmsPage?.videoFileUrl ?? cmsPage?.videoUrl}
                 imageCaption={cmsPage?.mediaCaption}
+                mediaFit={section.mediaFit}
               />
             );
           })
@@ -348,10 +377,23 @@ const shortCourses = [
       const alignHashSection = () => {
         if (!window.location.hash) return;
         const section = document.querySelector(window.location.hash);
-        if (section instanceof HTMLElement) section.scrollIntoView({ block: 'start', behavior: 'auto' });
+        if (section instanceof HTMLElement) {
+          const root = document.documentElement;
+          const previousSnapType = root.style.scrollSnapType;
+          const previousBehavior = root.style.scrollBehavior;
+          root.style.scrollSnapType = 'none';
+          root.style.scrollBehavior = 'auto';
+          window.scrollTo({ top: section.offsetTop, behavior: 'auto' });
+          requestAnimationFrame(() => {
+            root.style.scrollSnapType = previousSnapType;
+            root.style.scrollBehavior = previousBehavior;
+          });
+        }
       };
 
       window.addEventListener('hashchange', () => requestAnimationFrame(alignHashSection));
+      window.addEventListener('load', () => requestAnimationFrame(alignHashSection), { once: true });
+      document.fonts?.ready.then(() => requestAnimationFrame(alignHashSection));
       requestAnimationFrame(() => requestAnimationFrame(alignHashSection));
     </script>
   </body>

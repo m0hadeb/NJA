@@ -11,6 +11,7 @@ interface Props {
   imageAlt?: string;
   imageCaption?: string;
   videoSrc?: string;
+  mediaFit?: 'cover' | 'contain';
   backHref?: string;
   backLabel?: string;
 }
@@ -27,6 +28,7 @@ const {
   imageAlt = '',
   imageCaption = 'כאן תיכנס התמונה או הווידאו שילוו את הכתבה',
   videoSrc,
+  mediaFit = 'cover',
   backHref,
   backLabel = 'חזרה',
 } = Astro.props;
@@ -36,10 +38,32 @@ const titleId = `${id ?? title.toLowerCase().replace(/\s+/g, '-')}-title`;
 
 <section class="page-section content-detail-section" id={id} data-section={dataSection} aria-labelledby={titleId}>
   <div class="content-detail-inner">
-    <article class="content-detail-copy">
-      <p class="content-detail-eyebrow">{eyebrow}</p>
-      <h1 class:list={{ 'content-detail-title': true, english }} id={titleId}>{title}</h1>
-      <div class="content-detail-rule" aria-hidden="true"></div>
+    <div class="content-detail-lead">
+      <header class="content-detail-copy">
+        <h1 class:list={{ 'content-detail-title': true, english }} id={titleId}>{title}</h1>
+        <div class="content-detail-rule" aria-hidden="true"></div>
+      </header>
+
+      <figure class:list={{ 'content-detail-media': true, 'media-contain': mediaFit === 'contain' }}>
+        {
+          videoSrc ? (
+            <video controls playsinline preload="metadata" poster={imageSrc}>
+              <source src={videoSrc} />
+              הדפדפן שלך אינו תומך בהצגת וידאו.
+            </video>
+          ) : imageSrc ? (
+            <img src={imageSrc} alt={imageAlt} loading="lazy" />
+          ) : (
+            <div class="content-image-placeholder" role="img" aria-label={`מקום לתמונה או וידאו עבור ${title}`}>
+              <span aria-hidden="true">תמונה / וידאו</span>
+            </div>
+          )
+        }
+        <figcaption>{imageCaption}</figcaption>
+      </figure>
+    </div>
+
+    <article class="content-detail-article">
       {
         bodyHtml ? (
           <div class="content-detail-body content-rich-text" set:html={bodyHtml} />
@@ -54,27 +78,5 @@ const titleId = `${id ?? title.toLowerCase().replace(/\s+/g, '-')}-title`;
       }
     </article>
 
-    <figure class="content-detail-media">
-      {
-        videoSrc ? (
-          <video controls playsinline preload="metadata" poster={imageSrc}>
-            <source src={videoSrc} />
-            הדפדפן שלך אינו תומך בהצגת וידאו.
-          </video>
-        ) : imageSrc ? (
-          <img src={imageSrc} alt={imageAlt} loading="lazy" />
-        ) : (
-          <div class="content-image-placeholder" role="img" aria-label={`מקום לתמונה או וידאו עבור ${title}`}>
-            <span aria-hidden="true">תמונה / וידאו</span>
-          </div>
-        )
-      }
-      <figcaption>{imageCaption}</figcaption>
-    </figure>
-
-    <span class="seal content-detail-seal" aria-hidden="true">
-      <span class="seal-column">南京中</span>
-      <span class="seal-column">醫學院</span>
-    </span>
   </div>
 </section>

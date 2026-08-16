@@ -16,6 +16,7 @@ const aboutSections = [
     title: 'דרור אומר מוהדב',
     eyebrow: 'היכרות אישית ומקצועית',
     placeholder: 'כאן נוסיף את הסיפור המקצועי, הדרך והניסיון של דרור אומר מוהדב.',
+    imageSrc: '/images/dror-omer-mohadeb.png',
   },
   {
     id: 'academy',
@@ -23,6 +24,8 @@ const aboutSections = [
     eyebrow: 'בית ספר לרפואה סינית ויפנית',
     placeholder: 'כאן נוסיף את סיפור האקדמיה, מטרותיה והגישה שמובילה את הלימודים.',
     english: true,
+    imageSrc: '/images/nja-academy-vertical-brand.png',
+    mediaFit: 'contain',
   },
   {
     id: 'method',
@@ -35,6 +38,7 @@ const aboutSections = [
     title: 'הקהילה',
     eyebrow: 'קהילת Nan Jing Academy',
     placeholder: 'כאן נוסיף אינפורמציה על הקהילה, הפעילויות והחיבור בין המטפלים.',
+    imageSrc: '/images/nja-community-classroom.png',
   },
 ];
 
@@ -108,10 +112,11 @@ const cmsByKey = new Map(cmsPages.map((page) => [page.pageKey, page]));
                 body={section.placeholder}
                 bodyHtml={renderCmsBody(cmsPage)}
                 english={section.english}
-                imageSrc={cmsPage?.imageUrl}
+                imageSrc={cmsPage?.imageUrl ?? section.imageSrc}
                 imageAlt={cmsPage?.imageAlt ?? ''}
                 videoSrc={cmsPage?.videoFileUrl ?? cmsPage?.videoUrl}
                 imageCaption={cmsPage?.mediaCaption}
+                mediaFit={section.mediaFit}
               />
             );
           })
